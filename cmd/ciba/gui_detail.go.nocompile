@@ -1,0 +1,31 @@
+// +build OMIT
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/Edgaru089/ciba"
+	"github.com/andlabs/ui"
+)
+
+func buildSymbol(s ciba.Symbol, b *ui.Box) {
+
+	b.Append(ui.NewLabel(fmt.Sprintf("英: /%s/; 美: /%s/", s.PronounceAM, s.PronounceEN)), false)
+
+	g := ui.NewGrid()
+	g.SetPadded(true)
+	linecnt := 0
+	for i := 0; i < len(s.Parts); i++ {
+		g.Append(ui.NewLabel(s.Parts[i].Part), 0, linecnt, 1, 1, false, ui.AlignFill, false, ui.AlignFill)
+
+		for j := 0; j < len(s.Parts[i].Meanings); j++ {
+			g.Append(ui.NewLabel(s.Parts[i].Meanings[j]), 1, linecnt+j, 1, 1, false, ui.AlignFill, false, ui.AlignFill)
+			log.Println("    Pass", s.Parts[i].Meanings[j])
+		}
+
+		linecnt += len(s.Parts[i].Meanings)
+		log.Println("Pass", s.Parts[i])
+	}
+	b.Append(g, false)
+}
